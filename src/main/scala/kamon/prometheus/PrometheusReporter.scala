@@ -57,7 +57,7 @@ class PrometheusReporter extends MetricReporter {
   override def reportPeriodSnapshot(snapshot: PeriodSnapshot): Unit = {
     snapshotAccumulator.add(snapshot)
     val currentData = snapshotAccumulator.peek()
-    val scrapeDataBuilder = new ScrapeDataBuilder(readConfiguration(Kamon.config()))
+    val scrapeDataBuilder = new ScrapeDataBuilder(readConfiguration(Kamon.config()), Kamon.environment.tags)
 
     scrapeDataBuilder.appendCounters(currentData.metrics.counters)
     scrapeDataBuilder.appendGauges(currentData.metrics.gauges)
