@@ -203,7 +203,7 @@ class ScrapeDataBuilderSpec extends WordSpec with Matchers {
   }
 
   private def builder(buckets: Seq[java.lang.Double] = Seq(5D, 7D, 8D, 9D, 10D, 11D, 12D), environmentTags: Map[String, String] = Map.empty) = new ScrapeDataBuilder(
-    PrometheusReporter.Configuration(false, "localhost", 1, buckets, buckets, buckets), environmentTags
+    PrometheusReporter.Configuration(false, "localhost", 1, buckets, buckets, buckets, false), environmentTags
   )
 
   private def constantDistribution(name: String, tags: Map[String, String], unit: MeasurementUnit, lower: Int, upper: Int): MetricDistribution = {
