@@ -194,9 +194,25 @@ class ScrapeDataBuilderSpec extends WordSpec with Matchers {
       .build() should include {
         """
           |# TYPE counter_one_seconds_total counter
-          |counter_one_seconds_total{env_key="env_value",tag_with_dots="value"} 10.0
+          |counter_one_seconds_total{tag_with_dots="value",env_key="env_value"} 10.0
           |# TYPE gauge_one_seconds gauge
           |gauge_one_seconds{env_key="env_value"} 20.0
+        """.stripMargin.trim()
+      }
+    }
+
+    "let environment tags have precedence over custom tags" in {
+      val metric = MetricValue("some-metric", Map("custom.tag" -> "custom-value"), time.seconds, 10)
+
+      builder(environmentTags = Map("custom.tag" -> "environment-value"))
+        .appendCounters(Seq(metric))
+        .appendGauges(Seq(metric))
+        .build() should include {
+        """
+          |# TYPE some_metric_seconds_total counter
+          |some_metric_seconds_total{custom_tag="environment-value"} 10.0
+          |# TYPE some_metric_seconds gauge
+          |some_metric_seconds{custom_tag="environment-value"} 10.0
         """.stripMargin.trim()
       }
     }

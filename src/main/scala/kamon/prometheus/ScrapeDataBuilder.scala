@@ -141,7 +141,7 @@ class ScrapeDataBuilder(prometheusConfig: PrometheusReporter.Configuration, envi
 
 
   private def appendTags(tags: Map[String, String]): Unit = {
-    val allTags = environmentTags ++ tags
+    val allTags = tags ++ environmentTags
     if(allTags.nonEmpty) append("{")
 
     val tagIterator = allTags.iterator
